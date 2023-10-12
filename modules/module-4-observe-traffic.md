@@ -64,6 +64,7 @@
     ```
 
     In a browser, the following should be seen:
+    ![onlineboutique_gui](https://github.com/tigera-solutions/cc-eks-blueprint-secpos-workshop/assets/117195889/1d228e19-f5d6-4108-b6c3-060cbd25e51b)
 
     
 
