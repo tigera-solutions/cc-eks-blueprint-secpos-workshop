@@ -1,5 +1,8 @@
 # Amazon EKS Security Bootcamp </br> Visualize cluster traffic and identify security gaps
 
+![Calico-logo-2023-black](https://github.com/tigera-solutions/cc-eks-blueprint-secpos-workshop/assets/117195889/0c49cf4c-a98f-4c89-bd11-12ca3a622539)
+
+
 ## Welcome
 
 In this EKS-focused workshop, you will work with AWS EKS and Calico Cloud to learn how to improve the security posture of a cluster by using Calico Cloud to visualize traffic, use the policy recommender to get a baseline policy to secure workloads, implement zero-trust security for workloads to reduce the attack surface of applications running on EKS and to generate regular compliance reports to get a view of the security posture of the cluster once the policies have been applied.  
