@@ -8,9 +8,13 @@ As the Stars application is comprised of microservices in three namespaces, we w
 
 1. Select the correct cluster context on the top right, then in the left hamburger menu click on ```Policies > Recommendations``` 
 
-   **Screenshot_here**
+   ![policy_gui_1](https://github.com/tigera-solutions/cc-eks-blueprint-secpos-workshop/assets/117195889/3980f84a-0128-4e28-b023-f79450658e56)
+
 
 2. You will be presented with a page to enable the feature. Click the ```Enable Policy Recommendations``` button to instantiate the daemonset/pods for the feature.
+    
+    ![enable_policy_reco](https://github.com/tigera-solutions/cc-eks-blueprint-secpos-workshop/assets/117195889/720a7cd9-bc9b-4733-9b4d-7599d9d6c188)
+
    You can check that ```policy-recommendation``` shows ```True``` under the ```AVAILABLE``` column when you run ```kubectl get tigerastatus```
 
    ```bash
@@ -27,22 +31,27 @@ As the Stars application is comprised of microservices in three namespaces, we w
     policy-recommendation           True        False         False      123m
     ```
 
-    **Screenshot_here**
+3. In the Calico Cloud GUI, click on ```Global Settings``` on the top right and make the ```Stabilization Period``` and ```Processing Interval``` a bit more aggressive to have the policy recommendations show up more quickly.
 
-3. In the Calico Cloud GUI, click on ```Global Settings``` and make the ```Stabilization Period``` and ```Processing Interval``` a bit more aggressive to have the policy recommendations show up more quickly.
+  ![glob_Settings_location](https://github.com/tigera-solutions/cc-eks-blueprint-secpos-workshop/assets/117195889/f9b4a7be-0869-48cc-9337-052a3693270a)
 
-   **Screenshot_here**
+  ![glob_Setting_short](https://github.com/tigera-solutions/cc-eks-blueprint-secpos-workshop/assets/117195889/a74a774a-4128-44cb-a4a0-65bc56adbdb3)
 
-4. Once the traffic is analyzed and the policies show up in the ```Recommendations``` section, select the policies we are interested in for the ```Stars``` application across its namespaces and select the ```Bulk Actions``` option and ```Add to policy board```  .
 
-5. Navigating to the policy board should show the staged policies are in their own tier called ```namespace-isolation``` and we are ready review them by clicking on them. We investigate this further in the next section.
+4. Once the traffic is analyzed and the policies show up in the ```Recommendations``` section, select the policies we are interested in for the ```Stars``` application across its namespaces and select the ```Bulk Actions``` option and ```Add to policy board``` .
+   
+![select_policy_reco](https://github.com/tigera-solutions/cc-eks-blueprint-secpos-workshop/assets/117195889/5da08c08-bd8b-4a23-b6d5-28e8bf41d97c)
 
-    **Screenshot_here**
+![add_to_board](https://github.com/tigera-solutions/cc-eks-blueprint-secpos-workshop/assets/117195889/1176fb99-f8b2-4746-b676-071f731768fe)
+
+6. Navigating to the policy board should show the staged policies are in their own tier called ```namespace-isolation``` and we are ready review them by clicking on them. Staged policies are a preview mode where you can see the impact of the policy before you decide to enforce it. 
+
+![show_board](https://github.com/tigera-solutions/cc-eks-blueprint-secpos-workshop/assets/117195889/02ec1c1d-3101-4e19-8318-b5b2ed79889a)
 
 
 ## Visualize denied staged traffic via Elasticsearch Log Explorer
 
-1. To explore the flows that would be denied by the staged policies, we can explore the logs better in the ElasticSearch instance that collects all the flow logs. This can be accessed by clicking on ```Logs``` in the left menu, this takes us to the Kibana dashboard in a new browser tab.
+1. To explore the flows that would be denied by the staged policies in more detail, we can explore the logs better in the ElasticSearch instance that collects all the flow logs. This can be accessed by clicking on ```Logs``` in the left menu, this takes us to the Kibana dashboard in a new browser tab.
     
     ![Logs_menu](https://github.com/tigera-solutions/cc-eks-observability-workshop/assets/117195889/8c20ddf6-f0bc-4325-a81d-71af8370d69e)
 
