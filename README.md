@@ -1,6 +1,6 @@
 # Amazon EKS Security Bootcamp </br> Visualize cluster traffic and identify security gaps
 
-<img src="(https://github.com/tigera-solutions/cc-eks-blueprint-secpos-workshop/assets/117195889/0c49cf4c-a98f-4c89-bd11-12ca3a622539)" width="100" height="100">
+<img src="(https://github.com/tigera-solutions/cc-eks-blueprint-secpos-workshop/assets/117195889/0c49cf4c-a98f-4c89-bd11-12ca3a622539)" width="1024" height="768">
 
 ## Welcome
 
