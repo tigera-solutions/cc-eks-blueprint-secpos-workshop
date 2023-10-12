@@ -44,7 +44,7 @@ As the Stars application is comprised of microservices in three namespaces, we w
 
 ![add_to_board](https://github.com/tigera-solutions/cc-eks-blueprint-secpos-workshop/assets/117195889/1176fb99-f8b2-4746-b676-071f731768fe)
 
-6. Navigating to the policy board should show the staged policies are in their own tier called ```namespace-isolation``` and we are ready review them by clicking on them. Staged policies are a preview mode where you can see the impact of the policy before you decide to enforce it. 
+5. Navigating to the policy board should show the staged policies are in their own tier called ```namespace-isolation``` and we are ready review them by clicking on them. Staged policies are a preview mode where you can see the impact of the policy before you decide to enforce it. 
 
 ![show_board](https://github.com/tigera-solutions/cc-eks-blueprint-secpos-workshop/assets/117195889/02ec1c1d-3101-4e19-8318-b5b2ed79889a)
 
@@ -59,7 +59,7 @@ As the Stars application is comprised of microservices in three namespaces, we w
 
    ![kibana_discover](https://github.com/tigera-solutions/cc-eks-observability-workshop/assets/117195889/85a5702b-e210-4c4f-a784-ec5a66d7f63c) 
 
-4. From the left menu bar just below Add filter, ensure tigera_secure_ee_flows* index is selected and then click on the plus sign next to the following flow logs metadata to filter through the metadata. Make sure to filter as per the order listed below to have an organized and clear view of the filtered information. Change the filter time range to ```last 15 minutes```.
+3. From the left menu bar just below Add filter, ensure tigera_secure_ee_flows* index is selected and then click on the plus sign next to the following flow logs metadata to filter through the metadata. Make sure to filter as per the order listed below to have an organized and clear view of the filtered information. Change the filter time range to ```last 15 minutes```.
 
     ```bash
     source_namespace
@@ -72,10 +72,10 @@ As the Stars application is comprised of microservices in three namespaces, we w
     ```
     ![add_field](https://github.com/tigera-solutions/cc-eks-observability-workshop/assets/117195889/7c5e974e-e10b-42f9-8809-fbe43540adf2)
 
-5. Once the above filter is implemented, you should see a page similar to the following:
+4. Once the above filter is implemented, you should see a page similar to the following:
     ![filtered_logs](https://github.com/tigera-solutions/cc-eks-observability-workshop/assets/117195889/c49e7ff9-1b31-4326-b161-2620ad4e7d41)
 
-6. Type the following in the search bar of the ```Discover``` page, this will look for any traffic that would be getting denied by the staged policies we implemented:
+5. Type the following in the search bar of the ```Discover``` page, this will look for any traffic that would be getting denied by the staged policies we implemented:
 
     ```policies:{ all_policies: *default.staged**deny*  }```
 
@@ -103,7 +103,7 @@ As the Stars application is comprised of microservices in three namespaces, we w
     After:
     ![full_stars](https://github.com/tigera-solutions/cc-eks-observability-workshop/assets/117195889/69ad8519-5b73-4411-9eb6-9bc7dde24852)
 
-3. Checking back in the ElasticSearch log explorer, we see that we eventually hit no more matches for staged denied flows, which is what we want because no match means there is no undesired traffic hitting this rule. In production environments, make sure to do your due diligence that there is no denied traffic before enforcing your deny rules. Now we can go ahead and implement/Enforce our policy and all legitimate traffic should still flow.
+2. Checking back in the ElasticSearch log explorer, we see that we eventually hit no more matches for staged denied flows, which is what we want because no match means there is no undesired traffic hitting this rule. In production environments, make sure to do your due diligence that there is no denied traffic before enforcing your deny rules. Now we can go ahead and implement/Enforce our policy and all legitimate traffic should still flow.
 
     ![zero_results_good](https://github.com/tigera-solutions/cc-eks-observability-workshop/assets/117195889/859f5ba0-d045-457d-bda7-74f4b5290da9)
 
