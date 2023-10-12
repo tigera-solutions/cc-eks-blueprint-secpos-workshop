@@ -5,7 +5,7 @@
 1. From the cloned directory, execute:
 
     ```bash
-    kubectl apply -f manifests
+    kubectl apply -f app-manifests
     ```
   
     (Optional) Also install the metrics-server on EKS to get an idea as to the resource consumption on the cluster
