@@ -1,0 +1,493 @@
+nodeName,testIndex,testDescription,status,scored,remediation
+ip-192-168-52-251.ca-central-1.compute.internal,3.1.1,Ensure that the kubeconfig file permissions are set to 644 or more restrictive (Manual),WARN,false,"Run the below command (based on the file location on your system) on the each worker node.
+For example,
+chmod 644 /var/lib/kubelet/kubeconfig
+"
+ip-192-168-52-251.ca-central-1.compute.internal,3.1.2,Ensure that the kubelet kubeconfig file ownership is set to root:root (Manual),WARN,false,"Run the below command (based on the file location on your system) on the each worker node.
+For example,
+chown root:root /var/lib/kubelet/kubeconfig
+"
+ip-192-168-52-251.ca-central-1.compute.internal,3.1.3,Ensure that the kubelet configuration file has permissions set to 644 or more restrictive (Manual),WARN,false,"Run the following command (using the config file location identified in the Audit step)
+chmod 644 /etc/kubernetes/kubelet/kubelet-config.json
+"
+ip-192-168-52-251.ca-central-1.compute.internal,3.1.4,Ensure that the kubelet configuration file ownership is set to root:root (Manual),WARN,false,"Run the following command (using the config file location identified in the Audit step)
+chown root:root /etc/kubernetes/kubelet/kubelet-config.json
+"
+ip-192-168-52-251.ca-central-1.compute.internal,3.2.1,Ensure that the --anonymous-auth argument is set to false (Automated),FAIL,true,"If using a Kubelet config file, edit the file to set authentication: anonymous: enabled to
+false.
+If using executable arguments, edit the kubelet service file
+/etc/systemd/system/kubelet.service on each worker node and
+set the below parameter in KUBELET_SYSTEM_PODS_ARGS variable.
+--anonymous-auth=false
+Based on your system, restart the kubelet service. For example:
+systemctl daemon-reload
+systemctl restart kubelet.service
+"
+ip-192-168-52-251.ca-central-1.compute.internal,3.2.2,Ensure that the --authorization-mode argument is not set to AlwaysAllow (Automated),FAIL,true,"If using a Kubelet config file, edit the file to set authorization: mode to Webhook. If
+using executable arguments, edit the kubelet service file
+/etc/systemd/system/kubelet.service on each worker node and
+set the below parameter in KUBELET_AUTHZ_ARGS variable.
+--authorization-mode=Webhook
+Based on your system, restart the kubelet service. For example:
+systemctl daemon-reload
+systemctl restart kubelet.service
+"
+ip-192-168-52-251.ca-central-1.compute.internal,3.2.3,Ensure that the --client-ca-file argument is set as appropriate (Manual),WARN,false,"If using a Kubelet config file, edit the file to set authentication: x509: clientCAFile to
+the location of the client CA file.
+If using command line arguments, edit the kubelet service file
+/etc/systemd/system/kubelet.service on each worker node and
+set the below parameter in KUBELET_AUTHZ_ARGS variable.
+--client-ca-file=<path/to/client-ca-file>
+Based on your system, restart the kubelet service. For example:
+systemctl daemon-reload
+systemctl restart kubelet.service
+"
+ip-192-168-52-251.ca-central-1.compute.internal,3.2.4,Ensure that the --read-only-port argument is set to 0 (Manual),WARN,false,"If using a Kubelet config file, edit the file to set readOnlyPort to 0.
+If using command line arguments, edit the kubelet service file
+/etc/systemd/system/kubelet.service on each worker node and
+set the below parameter in KUBELET_SYSTEM_PODS_ARGS variable.
+--read-only-port=0
+Based on your system, restart the kubelet service. For example:
+systemctl daemon-reload
+systemctl restart kubelet.service
+"
+ip-192-168-52-251.ca-central-1.compute.internal,3.2.5,Ensure that the --streaming-connection-idle-timeout argument is not set to 0 (Manual),WARN,false,"If using a Kubelet config file, edit the file to set streamingConnectionIdleTimeout to a
+value other than 0.
+If using command line arguments, edit the kubelet service file
+/etc/systemd/system/kubelet.service on each worker node and
+set the below parameter in KUBELET_SYSTEM_PODS_ARGS variable.
+--streaming-connection-idle-timeout=5m
+Based on your system, restart the kubelet service. For example:
+systemctl daemon-reload
+systemctl restart kubelet.service
+"
+ip-192-168-52-251.ca-central-1.compute.internal,3.2.6,Ensure that the --protect-kernel-defaults argument is set to true (Automated),FAIL,true,"If using a Kubelet config file, edit the file to set protectKernelDefaults: true.
+If using command line arguments, edit the kubelet service file
+/etc/systemd/system/kubelet.service on each worker node and
+set the below parameter in KUBELET_SYSTEM_PODS_ARGS variable.
+--protect-kernel-defaults=true
+Based on your system, restart the kubelet service. For example:
+systemctl daemon-reload
+systemctl restart kubelet.service
+"
+ip-192-168-52-251.ca-central-1.compute.internal,3.2.7,Ensure that the --make-iptables-util-chains argument is set to true (Automated) ,FAIL,true,"If using a Kubelet config file, edit the file to set makeIPTablesUtilChains: true.
+If using command line arguments, edit the kubelet service file
+/etc/systemd/system/kubelet.service on each worker node and
+remove the --make-iptables-util-chains argument from the
+KUBELET_SYSTEM_PODS_ARGS variable.
+Based on your system, restart the kubelet service. For example:
+systemctl daemon-reload
+systemctl restart kubelet.service
+"
+ip-192-168-52-251.ca-central-1.compute.internal,3.2.8,Ensure that the --hostname-override argument is not set (Manual),WARN,false,"Edit the kubelet service file /etc/systemd/system/kubelet.service
+on each worker node and remove the --hostname-override argument from the
+KUBELET_SYSTEM_PODS_ARGS variable.
+Based on your system, restart the kubelet service. For example:
+systemctl daemon-reload
+systemctl restart kubelet.service
+"
+ip-192-168-52-251.ca-central-1.compute.internal,3.2.9,Ensure that the --eventRecordQPS argument is set to 0 or a level which ensures appropriate event capture (Automated),WARN,false,"If using a Kubelet config file, edit the file to set eventRecordQPS: to an appropriate level.
+If using command line arguments, edit the kubelet service file
+/etc/systemd/system/kubelet.service on each worker node and
+set the below parameter in KUBELET_SYSTEM_PODS_ARGS variable.
+Based on your system, restart the kubelet service. For example:
+systemctl daemon-reload
+systemctl restart kubelet.service
+"
+ip-192-168-52-251.ca-central-1.compute.internal,3.2.10,Ensure that the --rotate-certificates argument is not set to false (Manual),WARN,false,"If using a Kubelet config file, edit the file to add the line rotateCertificates: true or
+remove it altogether to use the default value.
+If using command line arguments, edit the kubelet service file
+/etc/systemd/system/kubelet.service on each worker node and
+remove --rotate-certificates=false argument from the KUBELET_CERTIFICATE_ARGS
+variable.
+Based on your system, restart the kubelet service. For example:
+systemctl daemon-reload
+systemctl restart kubelet.service
+"
+ip-192-168-52-251.ca-central-1.compute.internal,3.2.11,Ensure that the RotateKubeletServerCertificate argument is set to true (Manual),WARN,false,"Edit the kubelet service file /etc/systemd/system/kubelet.service
+on each worker node and set the below parameter in KUBELET_CERTIFICATE_ARGS variable.
+--feature-gates=RotateKubeletServerCertificate=true
+Based on your system, restart the kubelet service. For example:
+systemctl daemon-reload
+systemctl restart kubelet.service
+"
+ip-192-168-52-251.ca-central-1.compute.internal,3.3.1,Prefer using Container-Optimized OS when possible (Manual),WARN,false,"No remediation"
+ip-192-168-52-251.ca-central-1.compute.internal,4.1.1,Ensure that the cluster-admin role is only used where required (Manual),WARN,false,"Identify all clusterrolebindings to the cluster-admin role. Check if they are used and
+if they need this role or if they could use a role with fewer privileges.
+Where possible, first bind users to a lower privileged role and then remove the
+clusterrolebinding to the cluster-admin role :
+kubectl delete clusterrolebinding [name]
+"
+ip-192-168-52-251.ca-central-1.compute.internal,4.1.2,Minimize access to secrets (Manual),WARN,false,"Where possible, remove get, list and watch access to secret objects in the cluster.
+"
+ip-192-168-52-251.ca-central-1.compute.internal,4.1.3,Minimize wildcard use in Roles and ClusterRoles (Manual),WARN,false,"Where possible replace any use of wildcards in clusterroles and roles with specific
+objects or actions.
+"
+ip-192-168-52-251.ca-central-1.compute.internal,4.1.4,Minimize access to create pods (Manual),WARN,false,"Where possible, remove create access to pod objects in the cluster.
+"
+ip-192-168-52-251.ca-central-1.compute.internal,4.1.5,Ensure that default service accounts are not actively used. (Manual),WARN,false,"Create explicit service accounts wherever a Kubernetes workload requires specific access
+to the Kubernetes API server.
+Modify the configuration of each default service account to include this value
+automountServiceAccountToken: false
+"
+ip-192-168-52-251.ca-central-1.compute.internal,4.1.6,Ensure that Service Account Tokens are only mounted where necessary (Manual),WARN,false,"Modify the definition of pods and service accounts which do not need to mount service
+account tokens to disable it.
+"
+ip-192-168-52-251.ca-central-1.compute.internal,4.2.1,Minimize the admission of privileged containers (Automated),WARN,false,"Create a PSP as described in the Kubernetes documentation, ensuring that
+the .spec.privileged field is omitted or set to false.
+"
+ip-192-168-52-251.ca-central-1.compute.internal,4.2.2,Minimize the admission of containers wishing to share the host process ID namespace (Automated),WARN,false,"Create a PSP as described in the Kubernetes documentation, ensuring that the
+.spec.hostPID field is omitted or set to false.
+"
+ip-192-168-52-251.ca-central-1.compute.internal,4.2.3,Minimize the admission of containers wishing to share the host IPC namespace (Automated),WARN,false,"Create a PSP as described in the Kubernetes documentation, ensuring that the
+.spec.hostIPC field is omitted or set to false.
+"
+ip-192-168-52-251.ca-central-1.compute.internal,4.2.4,Minimize the admission of containers wishing to share the host network namespace (Automated),WARN,false,"Create a PSP as described in the Kubernetes documentation, ensuring that the
+.spec.hostNetwork field is omitted or set to false.
+"
+ip-192-168-52-251.ca-central-1.compute.internal,4.2.5,Minimize the admission of containers with allowPrivilegeEscalation (Automated),WARN,false,"Create a PSP as described in the Kubernetes documentation, ensuring that the
+.spec.allowPrivilegeEscalation field is omitted or set to false.
+"
+ip-192-168-52-251.ca-central-1.compute.internal,4.2.6,Minimize the admission of root containers (Automated),WARN,false,"Create a PSP as described in the Kubernetes documentation, ensuring that the
+.spec.runAsUser.rule is set to either MustRunAsNonRoot or MustRunAs with the range of
+UIDs not including 0.
+"
+ip-192-168-52-251.ca-central-1.compute.internal,4.2.7,Minimize the admission of containers with the NET_RAW capability (Automated),WARN,false,"Create a PSP as described in the Kubernetes documentation, ensuring that the
+.spec.requiredDropCapabilities is set to include either NET_RAW or ALL.
+"
+ip-192-168-52-251.ca-central-1.compute.internal,4.2.8,Minimize the admission of containers with added capabilities (Manual),WARN,false,"Ensure that allowedCapabilities is not present in PSPs for the cluster unless
+it is set to an empty array.
+"
+ip-192-168-52-251.ca-central-1.compute.internal,4.2.9,Minimize the admission of containers with capabilities assigned (Manual),WARN,false,"Review the use of capabilities in applications running on your cluster. Where a namespace
+contains applications which do not require any Linux capabities to operate consider adding
+a PSP which forbids the admission of containers which do not drop all capabilities.
+"
+ip-192-168-52-251.ca-central-1.compute.internal,4.3.1,Ensure that the latest CNI version is used (Manual),WARN,false,"Review the documentation of AWS CNI plugin, and ensure latest CNI version is used.
+"
+ip-192-168-52-251.ca-central-1.compute.internal,4.3.2,Ensure that all Namespaces have Network Policies defined (Manual),WARN,false,"Follow the documentation and create NetworkPolicy objects as you need them.
+"
+ip-192-168-52-251.ca-central-1.compute.internal,4.4.1,Prefer using secrets as files over secrets as environment variables (Manual),WARN,false,"If possible, rewrite application code to read secrets from mounted secret files, rather than
+from environment variables.
+"
+ip-192-168-52-251.ca-central-1.compute.internal,4.4.2,Consider external secret storage (Manual),WARN,false,"Refer to the secrets management options offered by your cloud provider or a third-party
+secrets management solution.
+"
+ip-192-168-52-251.ca-central-1.compute.internal,4.6.1,Create administrative boundaries between resources using namespaces (Manual),WARN,false,"Follow the documentation and create namespaces for objects in your deployment as you need
+them.
+"
+ip-192-168-52-251.ca-central-1.compute.internal,4.6.2,Apply Security Context to Your Pods and Containers (Manual),WARN,false,"Follow the Kubernetes documentation and apply security contexts to your pods. For a
+suggested list of security contexts, you may refer to the CIS Security Benchmark for Docker
+Containers.
+"
+ip-192-168-52-251.ca-central-1.compute.internal,4.6.3,The default namespace should not be used (Manual),WARN,false,"Ensure that namespaces are created to allow for appropriate segregation of Kubernetes
+resources and that all new resources are created in a specific namespace.
+"
+ip-192-168-52-251.ca-central-1.compute.internal,5.1.1,Ensure Image Vulnerability Scanning using Amazon ECR image scanning or a third-party provider (Manual),WARN,false,"To utilize AWS ECR for Image scanning please follow the steps below:
+
+To create a repository configured for scan on push (AWS CLI):
+aws ecr create-repository --repository-name $REPO_NAME --image-scanning-configuration scanOnPush=true --region $REGION_CODE
+
+To edit the settings of an existing repository (AWS CLI):
+aws ecr put-image-scanning-configuration --repository-name $REPO_NAME --image-scanning-configuration scanOnPush=true --region $REGION_CODE
+
+Use the following steps to start a manual image scan using the AWS Management Console.
+    Open the Amazon ECR console at https://console.aws.amazon.com/ecr/repositories.
+    From the navigation bar, choose the Region to create your repository in.
+    In the navigation pane, choose Repositories.
+    On the Repositories page, choose the repository that contains the image to scan.
+    On the Images page, select the image to scan and then choose Scan.
+"
+ip-192-168-52-251.ca-central-1.compute.internal,5.1.2,Minimize user access to Amazon ECR (Manual),WARN,false,"Before you use IAM to manage access to Amazon ECR, you should understand what IAM features
+are available to use with Amazon ECR. To get a high-level view of how Amazon ECR and other
+AWS services work with IAM, see AWS Services That Work with IAM in the IAM User Guide.
+"
+ip-192-168-52-251.ca-central-1.compute.internal,5.1.3,Minimize cluster access to read-only for Amazon ECR (Manual),WARN,false,"You can use your Amazon ECR images with Amazon EKS, but you need to satisfy the following prerequisites.
+
+The Amazon EKS worker node IAM role (NodeInstanceRole) that you use with your worker nodes must possess
+the following IAM policy permissions for Amazon ECR.
+
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Action": [
+                "ecr:BatchCheckLayerAvailability",
+                "ecr:BatchGetImage",
+                "ecr:GetDownloadUrlForLayer",
+                "ecr:GetAuthorizationToken"
+            ],
+            "Resource": "*"
+        }
+    ]
+}
+"
+ip-192-168-52-251.ca-central-1.compute.internal,5.1.4,Minimize Container Registries to only those approved (Manual),WARN,false,"No remediation"
+ip-192-168-52-251.ca-central-1.compute.internal,5.2.1,Prefer using dedicated Amazon EKS Service Accounts (Manual),WARN,false,"No remediation"
+ip-192-168-52-251.ca-central-1.compute.internal,5.3.1,Ensure Kubernetes Secrets are encrypted using Customer Master Keys (CMKs) managed in AWS KMS (Manual),WARN,false,"This process can only be performed during Cluster Creation.
+
+Enable 'Secrets Encryption' during Amazon EKS cluster creation as described
+in the links within the 'References' section.
+"
+ip-192-168-52-251.ca-central-1.compute.internal,5.4.1,Restrict Access to the Control Plane Endpoint (Manual),WARN,false,"No remediation"
+ip-192-168-52-251.ca-central-1.compute.internal,5.4.2,Ensure clusters are created with Private Endpoint Enabled and Public Access Disabled (Manual),WARN,false,"No remediation"
+ip-192-168-52-251.ca-central-1.compute.internal,5.4.3,Ensure clusters are created with Private Nodes (Manual),WARN,false,"No remediation"
+ip-192-168-52-251.ca-central-1.compute.internal,5.4.4,Ensure Network Policy is Enabled and set as appropriate (Manual),WARN,false,"No remediation"
+ip-192-168-52-251.ca-central-1.compute.internal,5.4.5,Encrypt traffic to HTTPS load balancers with TLS certificates (Manual),WARN,false,"No remediation"
+ip-192-168-52-251.ca-central-1.compute.internal,5.5.1,Manage Kubernetes RBAC users with AWS IAM Authenticator for Kubernetes (Manual),WARN,false,"Refer to the 'Managing users or IAM roles for your cluster' in Amazon EKS documentation.
+"
+ip-192-168-52-251.ca-central-1.compute.internal,5.6.1,Consider Fargate for running untrusted workloads (Manual),WARN,false,"Create a Fargate profile for your cluster Before you can schedule pods running on Fargate
+in your cluster, you must define a Fargate profile that specifies which pods should use
+Fargate when they are launched. For more information, see AWS Fargate profile.
+
+Note: If you created your cluster with eksctl using the --fargate option, then a Fargate profile has
+already been created for your cluster with selectors for all pods in the kube-system
+and default namespaces. Use the following procedure to create Fargate profiles for
+any other namespaces you would like to use with Fargate.
+"
+ip-192-168-86-95.ca-central-1.compute.internal,3.1.1,Ensure that the kubeconfig file permissions are set to 644 or more restrictive (Manual),WARN,false,"Run the below command (based on the file location on your system) on the each worker node.
+For example,
+chmod 644 /var/lib/kubelet/kubeconfig
+"
+ip-192-168-86-95.ca-central-1.compute.internal,3.1.2,Ensure that the kubelet kubeconfig file ownership is set to root:root (Manual),WARN,false,"Run the below command (based on the file location on your system) on the each worker node.
+For example,
+chown root:root /var/lib/kubelet/kubeconfig
+"
+ip-192-168-86-95.ca-central-1.compute.internal,3.1.3,Ensure that the kubelet configuration file has permissions set to 644 or more restrictive (Manual),WARN,false,"Run the following command (using the config file location identified in the Audit step)
+chmod 644 /etc/kubernetes/kubelet/kubelet-config.json
+"
+ip-192-168-86-95.ca-central-1.compute.internal,3.1.4,Ensure that the kubelet configuration file ownership is set to root:root (Manual),WARN,false,"Run the following command (using the config file location identified in the Audit step)
+chown root:root /etc/kubernetes/kubelet/kubelet-config.json
+"
+ip-192-168-86-95.ca-central-1.compute.internal,3.2.1,Ensure that the --anonymous-auth argument is set to false (Automated),FAIL,true,"If using a Kubelet config file, edit the file to set authentication: anonymous: enabled to
+false.
+If using executable arguments, edit the kubelet service file
+/etc/systemd/system/kubelet.service on each worker node and
+set the below parameter in KUBELET_SYSTEM_PODS_ARGS variable.
+--anonymous-auth=false
+Based on your system, restart the kubelet service. For example:
+systemctl daemon-reload
+systemctl restart kubelet.service
+"
+ip-192-168-86-95.ca-central-1.compute.internal,3.2.2,Ensure that the --authorization-mode argument is not set to AlwaysAllow (Automated),FAIL,true,"If using a Kubelet config file, edit the file to set authorization: mode to Webhook. If
+using executable arguments, edit the kubelet service file
+/etc/systemd/system/kubelet.service on each worker node and
+set the below parameter in KUBELET_AUTHZ_ARGS variable.
+--authorization-mode=Webhook
+Based on your system, restart the kubelet service. For example:
+systemctl daemon-reload
+systemctl restart kubelet.service
+"
+ip-192-168-86-95.ca-central-1.compute.internal,3.2.3,Ensure that the --client-ca-file argument is set as appropriate (Manual),WARN,false,"If using a Kubelet config file, edit the file to set authentication: x509: clientCAFile to
+the location of the client CA file.
+If using command line arguments, edit the kubelet service file
+/etc/systemd/system/kubelet.service on each worker node and
+set the below parameter in KUBELET_AUTHZ_ARGS variable.
+--client-ca-file=<path/to/client-ca-file>
+Based on your system, restart the kubelet service. For example:
+systemctl daemon-reload
+systemctl restart kubelet.service
+"
+ip-192-168-86-95.ca-central-1.compute.internal,3.2.4,Ensure that the --read-only-port argument is set to 0 (Manual),WARN,false,"If using a Kubelet config file, edit the file to set readOnlyPort to 0.
+If using command line arguments, edit the kubelet service file
+/etc/systemd/system/kubelet.service on each worker node and
+set the below parameter in KUBELET_SYSTEM_PODS_ARGS variable.
+--read-only-port=0
+Based on your system, restart the kubelet service. For example:
+systemctl daemon-reload
+systemctl restart kubelet.service
+"
+ip-192-168-86-95.ca-central-1.compute.internal,3.2.5,Ensure that the --streaming-connection-idle-timeout argument is not set to 0 (Manual),WARN,false,"If using a Kubelet config file, edit the file to set streamingConnectionIdleTimeout to a
+value other than 0.
+If using command line arguments, edit the kubelet service file
+/etc/systemd/system/kubelet.service on each worker node and
+set the below parameter in KUBELET_SYSTEM_PODS_ARGS variable.
+--streaming-connection-idle-timeout=5m
+Based on your system, restart the kubelet service. For example:
+systemctl daemon-reload
+systemctl restart kubelet.service
+"
+ip-192-168-86-95.ca-central-1.compute.internal,3.2.6,Ensure that the --protect-kernel-defaults argument is set to true (Automated),FAIL,true,"If using a Kubelet config file, edit the file to set protectKernelDefaults: true.
+If using command line arguments, edit the kubelet service file
+/etc/systemd/system/kubelet.service on each worker node and
+set the below parameter in KUBELET_SYSTEM_PODS_ARGS variable.
+--protect-kernel-defaults=true
+Based on your system, restart the kubelet service. For example:
+systemctl daemon-reload
+systemctl restart kubelet.service
+"
+ip-192-168-86-95.ca-central-1.compute.internal,3.2.7,Ensure that the --make-iptables-util-chains argument is set to true (Automated) ,FAIL,true,"If using a Kubelet config file, edit the file to set makeIPTablesUtilChains: true.
+If using command line arguments, edit the kubelet service file
+/etc/systemd/system/kubelet.service on each worker node and
+remove the --make-iptables-util-chains argument from the
+KUBELET_SYSTEM_PODS_ARGS variable.
+Based on your system, restart the kubelet service. For example:
+systemctl daemon-reload
+systemctl restart kubelet.service
+"
+ip-192-168-86-95.ca-central-1.compute.internal,3.2.8,Ensure that the --hostname-override argument is not set (Manual),WARN,false,"Edit the kubelet service file /etc/systemd/system/kubelet.service
+on each worker node and remove the --hostname-override argument from the
+KUBELET_SYSTEM_PODS_ARGS variable.
+Based on your system, restart the kubelet service. For example:
+systemctl daemon-reload
+systemctl restart kubelet.service
+"
+ip-192-168-86-95.ca-central-1.compute.internal,3.2.9,Ensure that the --eventRecordQPS argument is set to 0 or a level which ensures appropriate event capture (Automated),WARN,false,"If using a Kubelet config file, edit the file to set eventRecordQPS: to an appropriate level.
+If using command line arguments, edit the kubelet service file
+/etc/systemd/system/kubelet.service on each worker node and
+set the below parameter in KUBELET_SYSTEM_PODS_ARGS variable.
+Based on your system, restart the kubelet service. For example:
+systemctl daemon-reload
+systemctl restart kubelet.service
+"
+ip-192-168-86-95.ca-central-1.compute.internal,3.2.10,Ensure that the --rotate-certificates argument is not set to false (Manual),WARN,false,"If using a Kubelet config file, edit the file to add the line rotateCertificates: true or
+remove it altogether to use the default value.
+If using command line arguments, edit the kubelet service file
+/etc/systemd/system/kubelet.service on each worker node and
+remove --rotate-certificates=false argument from the KUBELET_CERTIFICATE_ARGS
+variable.
+Based on your system, restart the kubelet service. For example:
+systemctl daemon-reload
+systemctl restart kubelet.service
+"
+ip-192-168-86-95.ca-central-1.compute.internal,3.2.11,Ensure that the RotateKubeletServerCertificate argument is set to true (Manual),WARN,false,"Edit the kubelet service file /etc/systemd/system/kubelet.service
+on each worker node and set the below parameter in KUBELET_CERTIFICATE_ARGS variable.
+--feature-gates=RotateKubeletServerCertificate=true
+Based on your system, restart the kubelet service. For example:
+systemctl daemon-reload
+systemctl restart kubelet.service
+"
+ip-192-168-86-95.ca-central-1.compute.internal,3.3.1,Prefer using Container-Optimized OS when possible (Manual),WARN,false,"No remediation"
+ip-192-168-86-95.ca-central-1.compute.internal,4.1.1,Ensure that the cluster-admin role is only used where required (Manual),WARN,false,"Identify all clusterrolebindings to the cluster-admin role. Check if they are used and
+if they need this role or if they could use a role with fewer privileges.
+Where possible, first bind users to a lower privileged role and then remove the
+clusterrolebinding to the cluster-admin role :
+kubectl delete clusterrolebinding [name]
+"
+ip-192-168-86-95.ca-central-1.compute.internal,4.1.2,Minimize access to secrets (Manual),WARN,false,"Where possible, remove get, list and watch access to secret objects in the cluster.
+"
+ip-192-168-86-95.ca-central-1.compute.internal,4.1.3,Minimize wildcard use in Roles and ClusterRoles (Manual),WARN,false,"Where possible replace any use of wildcards in clusterroles and roles with specific
+objects or actions.
+"
+ip-192-168-86-95.ca-central-1.compute.internal,4.1.4,Minimize access to create pods (Manual),WARN,false,"Where possible, remove create access to pod objects in the cluster.
+"
+ip-192-168-86-95.ca-central-1.compute.internal,4.1.5,Ensure that default service accounts are not actively used. (Manual),WARN,false,"Create explicit service accounts wherever a Kubernetes workload requires specific access
+to the Kubernetes API server.
+Modify the configuration of each default service account to include this value
+automountServiceAccountToken: false
+"
+ip-192-168-86-95.ca-central-1.compute.internal,4.1.6,Ensure that Service Account Tokens are only mounted where necessary (Manual),WARN,false,"Modify the definition of pods and service accounts which do not need to mount service
+account tokens to disable it.
+"
+ip-192-168-86-95.ca-central-1.compute.internal,4.2.1,Minimize the admission of privileged containers (Automated),WARN,false,"Create a PSP as described in the Kubernetes documentation, ensuring that
+the .spec.privileged field is omitted or set to false.
+"
+ip-192-168-86-95.ca-central-1.compute.internal,4.2.2,Minimize the admission of containers wishing to share the host process ID namespace (Automated),WARN,false,"Create a PSP as described in the Kubernetes documentation, ensuring that the
+.spec.hostPID field is omitted or set to false.
+"
+ip-192-168-86-95.ca-central-1.compute.internal,4.2.3,Minimize the admission of containers wishing to share the host IPC namespace (Automated),WARN,false,"Create a PSP as described in the Kubernetes documentation, ensuring that the
+.spec.hostIPC field is omitted or set to false.
+"
+ip-192-168-86-95.ca-central-1.compute.internal,4.2.4,Minimize the admission of containers wishing to share the host network namespace (Automated),WARN,false,"Create a PSP as described in the Kubernetes documentation, ensuring that the
+.spec.hostNetwork field is omitted or set to false.
+"
+ip-192-168-86-95.ca-central-1.compute.internal,4.2.5,Minimize the admission of containers with allowPrivilegeEscalation (Automated),WARN,false,"Create a PSP as described in the Kubernetes documentation, ensuring that the
+.spec.allowPrivilegeEscalation field is omitted or set to false.
+"
+ip-192-168-86-95.ca-central-1.compute.internal,4.2.6,Minimize the admission of root containers (Automated),WARN,false,"Create a PSP as described in the Kubernetes documentation, ensuring that the
+.spec.runAsUser.rule is set to either MustRunAsNonRoot or MustRunAs with the range of
+UIDs not including 0.
+"
+ip-192-168-86-95.ca-central-1.compute.internal,4.2.7,Minimize the admission of containers with the NET_RAW capability (Automated),WARN,false,"Create a PSP as described in the Kubernetes documentation, ensuring that the
+.spec.requiredDropCapabilities is set to include either NET_RAW or ALL.
+"
+ip-192-168-86-95.ca-central-1.compute.internal,4.2.8,Minimize the admission of containers with added capabilities (Manual),WARN,false,"Ensure that allowedCapabilities is not present in PSPs for the cluster unless
+it is set to an empty array.
+"
+ip-192-168-86-95.ca-central-1.compute.internal,4.2.9,Minimize the admission of containers with capabilities assigned (Manual),WARN,false,"Review the use of capabilities in applications running on your cluster. Where a namespace
+contains applications which do not require any Linux capabities to operate consider adding
+a PSP which forbids the admission of containers which do not drop all capabilities.
+"
+ip-192-168-86-95.ca-central-1.compute.internal,4.3.1,Ensure that the latest CNI version is used (Manual),WARN,false,"Review the documentation of AWS CNI plugin, and ensure latest CNI version is used.
+"
+ip-192-168-86-95.ca-central-1.compute.internal,4.3.2,Ensure that all Namespaces have Network Policies defined (Manual),WARN,false,"Follow the documentation and create NetworkPolicy objects as you need them.
+"
+ip-192-168-86-95.ca-central-1.compute.internal,4.4.1,Prefer using secrets as files over secrets as environment variables (Manual),WARN,false,"If possible, rewrite application code to read secrets from mounted secret files, rather than
+from environment variables.
+"
+ip-192-168-86-95.ca-central-1.compute.internal,4.4.2,Consider external secret storage (Manual),WARN,false,"Refer to the secrets management options offered by your cloud provider or a third-party
+secrets management solution.
+"
+ip-192-168-86-95.ca-central-1.compute.internal,4.6.1,Create administrative boundaries between resources using namespaces (Manual),WARN,false,"Follow the documentation and create namespaces for objects in your deployment as you need
+them.
+"
+ip-192-168-86-95.ca-central-1.compute.internal,4.6.2,Apply Security Context to Your Pods and Containers (Manual),WARN,false,"Follow the Kubernetes documentation and apply security contexts to your pods. For a
+suggested list of security contexts, you may refer to the CIS Security Benchmark for Docker
+Containers.
+"
+ip-192-168-86-95.ca-central-1.compute.internal,4.6.3,The default namespace should not be used (Manual),WARN,false,"Ensure that namespaces are created to allow for appropriate segregation of Kubernetes
+resources and that all new resources are created in a specific namespace.
+"
+ip-192-168-86-95.ca-central-1.compute.internal,5.1.1,Ensure Image Vulnerability Scanning using Amazon ECR image scanning or a third-party provider (Manual),WARN,false,"To utilize AWS ECR for Image scanning please follow the steps below:
+
+To create a repository configured for scan on push (AWS CLI):
+aws ecr create-repository --repository-name $REPO_NAME --image-scanning-configuration scanOnPush=true --region $REGION_CODE
+
+To edit the settings of an existing repository (AWS CLI):
+aws ecr put-image-scanning-configuration --repository-name $REPO_NAME --image-scanning-configuration scanOnPush=true --region $REGION_CODE
+
+Use the following steps to start a manual image scan using the AWS Management Console.
+    Open the Amazon ECR console at https://console.aws.amazon.com/ecr/repositories.
+    From the navigation bar, choose the Region to create your repository in.
+    In the navigation pane, choose Repositories.
+    On the Repositories page, choose the repository that contains the image to scan.
+    On the Images page, select the image to scan and then choose Scan.
+"
+ip-192-168-86-95.ca-central-1.compute.internal,5.1.2,Minimize user access to Amazon ECR (Manual),WARN,false,"Before you use IAM to manage access to Amazon ECR, you should understand what IAM features
+are available to use with Amazon ECR. To get a high-level view of how Amazon ECR and other
+AWS services work with IAM, see AWS Services That Work with IAM in the IAM User Guide.
+"
+ip-192-168-86-95.ca-central-1.compute.internal,5.1.3,Minimize cluster access to read-only for Amazon ECR (Manual),WARN,false,"You can use your Amazon ECR images with Amazon EKS, but you need to satisfy the following prerequisites.
+
+The Amazon EKS worker node IAM role (NodeInstanceRole) that you use with your worker nodes must possess
+the following IAM policy permissions for Amazon ECR.
+
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Action": [
+                "ecr:BatchCheckLayerAvailability",
+                "ecr:BatchGetImage",
+                "ecr:GetDownloadUrlForLayer",
+                "ecr:GetAuthorizationToken"
+            ],
+            "Resource": "*"
+        }
+    ]
+}
+"
+ip-192-168-86-95.ca-central-1.compute.internal,5.1.4,Minimize Container Registries to only those approved (Manual),WARN,false,"No remediation"
+ip-192-168-86-95.ca-central-1.compute.internal,5.2.1,Prefer using dedicated Amazon EKS Service Accounts (Manual),WARN,false,"No remediation"
+ip-192-168-86-95.ca-central-1.compute.internal,5.3.1,Ensure Kubernetes Secrets are encrypted using Customer Master Keys (CMKs) managed in AWS KMS (Manual),WARN,false,"This process can only be performed during Cluster Creation.
+
+Enable 'Secrets Encryption' during Amazon EKS cluster creation as described
+in the links within the 'References' section.
+"
+ip-192-168-86-95.ca-central-1.compute.internal,5.4.1,Restrict Access to the Control Plane Endpoint (Manual),WARN,false,"No remediation"
+ip-192-168-86-95.ca-central-1.compute.internal,5.4.2,Ensure clusters are created with Private Endpoint Enabled and Public Access Disabled (Manual),WARN,false,"No remediation"
+ip-192-168-86-95.ca-central-1.compute.internal,5.4.3,Ensure clusters are created with Private Nodes (Manual),WARN,false,"No remediation"
+ip-192-168-86-95.ca-central-1.compute.internal,5.4.4,Ensure Network Policy is Enabled and set as appropriate (Manual),WARN,false,"No remediation"
+ip-192-168-86-95.ca-central-1.compute.internal,5.4.5,Encrypt traffic to HTTPS load balancers with TLS certificates (Manual),WARN,false,"No remediation"
+ip-192-168-86-95.ca-central-1.compute.internal,5.5.1,Manage Kubernetes RBAC users with AWS IAM Authenticator for Kubernetes (Manual),WARN,false,"Refer to the 'Managing users or IAM roles for your cluster' in Amazon EKS documentation.
+"
+ip-192-168-86-95.ca-central-1.compute.internal,5.6.1,Consider Fargate for running untrusted workloads (Manual),WARN,false,"Create a Fargate profile for your cluster Before you can schedule pods running on Fargate
+in your cluster, you must define a Fargate profile that specifies which pods should use
+Fargate when they are launched. For more information, see AWS Fargate profile.
+
+Note: If you created your cluster with eksctl using the --fargate option, then a Fargate profile has
+already been created for your cluster with selectors for all pods in the kube-system
+and default namespaces. Use the following procedure to create Fargate profiles for
+any other namespaces you would like to use with Fargate.
+"

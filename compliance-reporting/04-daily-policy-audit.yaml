@@ -1,0 +1,7 @@
+apiVersion: projectcalico.org/v3
+kind: GlobalReport
+metadata:
+  name: daily-policy-audit
+spec:
+  reportType: policy-audit
+  schedule: 0 0 * * *

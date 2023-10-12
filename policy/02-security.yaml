@@ -1,0 +1,135 @@
+apiVersion: projectcalico.org/v3
+kind: GlobalNetworkPolicy
+metadata:
+  name: security.security-default-pass
+spec:
+  tier: security
+  order: 10000
+  ingress:
+    - action: Pass
+      source: {}
+      destination: {}
+  egress:
+    - action: Pass
+      source: {}
+      destination: {}
+  types:
+    - Ingress
+    - Egress
+---
+kind: GlobalThreatFeed
+apiVersion: projectcalico.org/v3
+metadata:
+  name: alienvault.ipthreatfeeds
+spec:
+  content: IPSet
+  mode: Enabled
+  description: AlienVault IP Block List
+  feedType: Builtin
+  globalNetworkSet:
+    labels:
+      feed: otx-ipthreatfeed
+  pull:
+    http:
+      format: {}
+      url: 'https://installer.calicocloud.io/feeds/v1/ips'
+---
+apiVersion: projectcalico.org/v3
+kind: GlobalNetworkPolicy
+metadata:
+  name: security.block-alienvault-ipthreatfeed
+spec:
+  tier: security
+  order: -90
+  selector: all()
+  namespaceSelector: ''
+  serviceAccountSelector: ''
+  ingress:
+    - action: Deny
+      source: 
+        selector: feed == "otx-ipthreatfeed"
+      destination: {}
+  egress:
+    - action: Deny
+      source: {}
+      destination:
+        selector: feed == "otx-ipthreatfeed"
+  types:
+    - Ingress
+    - Egress
+---
+apiVersion: projectcalico.org/v3
+kind: GlobalNetworkPolicy
+metadata:
+  name: security.cluster-dns-allow-all
+spec:
+  tier: security
+  order: 20
+  ingress:
+    - action: Allow
+      protocol: TCP
+      source:
+        namespaceSelector: all()
+      destination:
+        selector: k8s-app == "kube-dns"
+        ports:
+          - '53'
+    - action: Allow
+      protocol: UDP
+      source:
+        namespaceSelector: all()
+      destination:
+        selector: k8s-app == "kube-dns"
+        ports:
+          - '53'
+  egress:
+    - action: Allow
+      protocol: TCP
+      source:
+        namespaceSelector: all()
+      destination:
+        selector: k8s-app == "kube-dns"
+        ports:
+          - '53'
+    - action: Allow
+      protocol: UDP
+      source:
+        namespaceSelector: all()
+      destination:
+        selector: k8s-app == "kube-dns"
+        ports:
+          - '53'
+  types:
+    - Ingress
+    - Egress
+---
+apiVersion: projectcalico.org/v3
+kind: GlobalNetworkSet
+metadata:
+  name: trusted-repos
+  labels:
+    external-ep: trusted-repos
+spec:
+  allowedEgressDomains:
+    - '*.docker.com'
+    - '*.quay.io'
+    - '*.ubuntu.com'
+    - '*.docker.io'
+    - gcr.io
+    - '*.tigera.io'
+    - api.twilio.com
+---
+apiVersion: projectcalico.org/v3
+kind: GlobalNetworkPolicy
+metadata:
+  name: security.external-domain-access
+spec:
+  tier: security
+  selector: (projectcalico.org/namespace == "management-ui" || projectcalico.org/namespace == "client" || projectcalico.org/namespace == "stars" || projectcalico.org/namespace == "hipstershop")
+  order: 10
+  types:
+    - Egress
+  egress:
+  - action: Allow
+    destination:
+      selector: external-ep == "trusted-repos"

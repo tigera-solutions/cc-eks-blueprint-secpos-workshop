@@ -1,0 +1,3 @@
+
+      startTime,endTime,endpointSelector,namespaceNames,namespaceSelector,serviceAccountNames,serviceAccountSelectors,endpointsNumIngressProtected,endpointsNumEgressProtected,endpointsNumIngressUnprotected,endpointsNumEgressUnprotected,endpointsNumIngressFromInternet,endpointsNumEgressToInternet,endpointsNumIngressFromOtherNamespace,endpointsNumEgressToOtherNamespace,endpointsNumEnvoyEnabled
+2023-10-12T03:17:09Z,2023-10-12T04:17:09Z,,,,,,34,36,21,19,8,23,11,27,0

@@ -1,0 +1,367 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: run-reporter-inventory
+  namespace: tigera-compliance
+  labels:
+    k8s-app: compliance-reporter
+spec:
+  nodeSelector:
+    kubernetes.io/os: linux
+  restartPolicy: Never
+  serviceAccountName: tigera-compliance-reporter
+  tolerations:
+    - key: node-role.kubernetes.io/master
+      effect: NoSchedule
+  imagePullSecrets:
+    - name: tigera-pull-secret
+  containers:
+    - name: reporter
+      # Modify this image name, if you have re-tagged the image and are using a local
+      # docker image repository.
+      # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      image: quay.io/tigera/compliance-reporter:<CALICO_VERSION>
+      # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      env:
+        # Modify this value with name of an existing globalreport resource.
+        # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        - name: TIGERA_COMPLIANCE_REPORT_NAME
+          value: <INVENTORY_REPORT_NAME>
+          # Modify these values with the start and end time frame that should be reported on.
+          # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        - name: TIGERA_COMPLIANCE_REPORT_START_TIME
+          value: <TIGERA_COMPLIANCE_REPORT_START_TIME>
+        - name: TIGERA_COMPLIANCE_REPORT_END_TIME
+          value: <TIGERA_COMPLIANCE_REPORT_END_TIME>
+          # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        - name: LOG_LEVEL
+          value: "warning"
+        - name: LINSEED_CLIENT_CERT
+          value: /tigera-compliance-reporter-tls/tls.crt
+        - name: LINSEED_CLIENT_KEY
+          value: /tigera-compliance-reporter-tls/tls.key
+        - name: LINSEED_TOKEN
+          value: /var/run/secrets/tigera.io/linseed/token
+      securityContext:
+        allowPrivilegeEscalation: false
+        capabilities:
+          drop:
+            - ALL
+        privileged: false
+        runAsGroup: 0
+        runAsNonRoot: false
+        runAsUser: 0
+        seccompProfile:
+          type: RuntimeDefault
+      volumeMounts:
+        - mountPath: /var/log/calico
+          name: var-log-calico
+        - mountPath: /etc/pki/tls/certs/
+          name: tigera-ca-bundle
+          readOnly: true
+        - mountPath: /tigera-compliance-reporter-tls
+          name: tigera-compliance-reporter-tls
+          readOnly: true
+        - mountPath: /var/run/secrets/tigera.io/linseed/
+          name: linseed-token
+      livenessProbe:
+        httpGet:
+          path: /liveness
+          port: 9099
+          host: localhost
+  volumes:
+    - name: var-log-calico
+      hostPath:
+        path: /var/log/calico
+        type: DirectoryOrCreate
+    - configMap:
+        defaultMode: 420
+        name: tigera-ca-bundle
+      name: tigera-ca-bundle
+    - name: tigera-compliance-reporter-tls
+      secret:
+        defaultMode: 420
+        secretName: tigera-compliance-reporter-tls
+    - name: linseed-token
+      secret:
+        defaultMode: 420
+        secretName: tigera-compliance-reporter-tigera-linseed-token
+        items:
+          - key: token
+            path: token
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: run-reporter-network-access
+  namespace: tigera-compliance
+  labels:
+    k8s-app: compliance-reporter
+spec:
+  nodeSelector:
+    kubernetes.io/os: linux
+  restartPolicy: Never
+  serviceAccountName: tigera-compliance-reporter
+  tolerations:
+    - key: node-role.kubernetes.io/master
+      effect: NoSchedule
+  imagePullSecrets:
+    - name: tigera-pull-secret
+  containers:
+    - name: reporter
+      # Modify this image name, if you have re-tagged the image and are using a local
+      # docker image repository.
+      # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      image: quay.io/tigera/compliance-reporter:<CALICO_VERSION>
+      # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      env:
+        # Modify this value with name of an existing globalreport resource.
+        # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        - name: TIGERA_COMPLIANCE_REPORT_NAME
+          value: <NETWORK_ACCESS_REPORT_NAME>
+          # Modify these values with the start and end time frame that should be reported on.
+          # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        - name: TIGERA_COMPLIANCE_REPORT_START_TIME
+          value: <TIGERA_COMPLIANCE_REPORT_START_TIME>
+        - name: TIGERA_COMPLIANCE_REPORT_END_TIME
+          value: <TIGERA_COMPLIANCE_REPORT_END_TIME>
+          # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        - name: LOG_LEVEL
+          value: "warning"
+        - name: LINSEED_CLIENT_CERT
+          value: /tigera-compliance-reporter-tls/tls.crt
+        - name: LINSEED_CLIENT_KEY
+          value: /tigera-compliance-reporter-tls/tls.key
+        - name: LINSEED_TOKEN
+          value: /var/run/secrets/tigera.io/linseed/token
+      securityContext:
+        allowPrivilegeEscalation: false
+        capabilities:
+          drop:
+            - ALL
+        privileged: false
+        runAsGroup: 0
+        runAsNonRoot: false
+        runAsUser: 0
+        seccompProfile:
+          type: RuntimeDefault
+      volumeMounts:
+        - mountPath: /var/log/calico
+          name: var-log-calico
+        - mountPath: /etc/pki/tls/certs/
+          name: tigera-ca-bundle
+          readOnly: true
+        - mountPath: /tigera-compliance-reporter-tls
+          name: tigera-compliance-reporter-tls
+          readOnly: true
+        - mountPath: /var/run/secrets/tigera.io/linseed/
+          name: linseed-token
+      livenessProbe:
+        httpGet:
+          path: /liveness
+          port: 9099
+          host: localhost
+  volumes:
+    - name: var-log-calico
+      hostPath:
+        path: /var/log/calico
+        type: DirectoryOrCreate
+    - configMap:
+        defaultMode: 420
+        name: tigera-ca-bundle
+      name: tigera-ca-bundle
+    - name: tigera-compliance-reporter-tls
+      secret:
+        defaultMode: 420
+        secretName: tigera-compliance-reporter-tls
+    - name: linseed-token
+      secret:
+        defaultMode: 420
+        secretName: tigera-compliance-reporter-tigera-linseed-token
+        items:
+          - key: token
+            path: token
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: run-reporter-policy-audit
+  namespace: tigera-compliance
+  labels:
+    k8s-app: compliance-reporter
+spec:
+  nodeSelector:
+    kubernetes.io/os: linux
+  restartPolicy: Never
+  serviceAccountName: tigera-compliance-reporter
+  tolerations:
+    - key: node-role.kubernetes.io/master
+      effect: NoSchedule
+  imagePullSecrets:
+    - name: tigera-pull-secret
+  containers:
+    - name: reporter
+      # Modify this image name, if you have re-tagged the image and are using a local
+      # docker image repository.
+      # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      image: quay.io/tigera/compliance-reporter:<CALICO_VERSION>
+      # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      env:
+        # Modify this value with name of an existing globalreport resource.
+        # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        - name: TIGERA_COMPLIANCE_REPORT_NAME
+          value: <POLICY_AUDIT_REPORT_NAME>
+          # Modify these values with the start and end time frame that should be reported on.
+          # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        - name: TIGERA_COMPLIANCE_REPORT_START_TIME
+          value: <TIGERA_COMPLIANCE_REPORT_START_TIME>
+        - name: TIGERA_COMPLIANCE_REPORT_END_TIME
+          value: <TIGERA_COMPLIANCE_REPORT_END_TIME>
+          # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        - name: LOG_LEVEL
+          value: "warning"
+        - name: LINSEED_CLIENT_CERT
+          value: /tigera-compliance-reporter-tls/tls.crt
+        - name: LINSEED_CLIENT_KEY
+          value: /tigera-compliance-reporter-tls/tls.key
+        - name: LINSEED_TOKEN
+          value: /var/run/secrets/tigera.io/linseed/token
+      securityContext:
+        allowPrivilegeEscalation: false
+        capabilities:
+          drop:
+            - ALL
+        privileged: false
+        runAsGroup: 0
+        runAsNonRoot: false
+        runAsUser: 0
+        seccompProfile:
+          type: RuntimeDefault
+      volumeMounts:
+        - mountPath: /var/log/calico
+          name: var-log-calico
+        - mountPath: /etc/pki/tls/certs/
+          name: tigera-ca-bundle
+          readOnly: true
+        - mountPath: /tigera-compliance-reporter-tls
+          name: tigera-compliance-reporter-tls
+          readOnly: true
+        - mountPath: /var/run/secrets/tigera.io/linseed/
+          name: linseed-token
+      livenessProbe:
+        httpGet:
+          path: /liveness
+          port: 9099
+          host: localhost
+  volumes:
+    - name: var-log-calico
+      hostPath:
+        path: /var/log/calico
+        type: DirectoryOrCreate
+    - configMap:
+        defaultMode: 420
+        name: tigera-ca-bundle
+      name: tigera-ca-bundle
+    - name: tigera-compliance-reporter-tls
+      secret:
+        defaultMode: 420
+        secretName: tigera-compliance-reporter-tls
+    - name: linseed-token
+      secret:
+        defaultMode: 420
+        secretName: tigera-compliance-reporter-tigera-linseed-token
+        items:
+          - key: token
+            path: token
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: run-reporter-cis-benchmark
+  namespace: tigera-compliance
+  labels:
+    k8s-app: compliance-reporter
+spec:
+  nodeSelector:
+    kubernetes.io/os: linux
+  restartPolicy: Never
+  serviceAccountName: tigera-compliance-reporter
+  tolerations:
+    - key: node-role.kubernetes.io/master
+      effect: NoSchedule
+  imagePullSecrets:
+    - name: tigera-pull-secret
+  containers:
+    - name: reporter
+      # Modify this image name, if you have re-tagged the image and are using a local
+      # docker image repository.
+      # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      image: quay.io/tigera/compliance-reporter:<CALICO_VERSION>
+      # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      env:
+        # Modify this value with name of an existing globalreport resource.
+        # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        - name: TIGERA_COMPLIANCE_REPORT_NAME
+          value: <CIS_BENCHMARK_NAME>
+          # Modify these values with the start and end time frame that should be reported on.
+          # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        - name: TIGERA_COMPLIANCE_REPORT_START_TIME
+          value: <TIGERA_COMPLIANCE_REPORT_START_TIME>
+        - name: TIGERA_COMPLIANCE_REPORT_END_TIME
+          value: <TIGERA_COMPLIANCE_REPORT_END_TIME>
+          # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        - name: LOG_LEVEL
+          value: "warning"
+        - name: LINSEED_CLIENT_CERT
+          value: /tigera-compliance-reporter-tls/tls.crt
+        - name: LINSEED_CLIENT_KEY
+          value: /tigera-compliance-reporter-tls/tls.key
+        - name: LINSEED_TOKEN
+          value: /var/run/secrets/tigera.io/linseed/token
+      securityContext:
+        allowPrivilegeEscalation: false
+        capabilities:
+          drop:
+            - ALL
+        privileged: false
+        runAsGroup: 0
+        runAsNonRoot: false
+        runAsUser: 0
+        seccompProfile:
+          type: RuntimeDefault
+      volumeMounts:
+        - mountPath: /var/log/calico
+          name: var-log-calico
+        - mountPath: /etc/pki/tls/certs/
+          name: tigera-ca-bundle
+          readOnly: true
+        - mountPath: /tigera-compliance-reporter-tls
+          name: tigera-compliance-reporter-tls
+          readOnly: true
+        - mountPath: /var/run/secrets/tigera.io/linseed/
+          name: linseed-token
+      livenessProbe:
+        httpGet:
+          path: /liveness
+          port: 9099
+          host: localhost
+  volumes:
+    - name: var-log-calico
+      hostPath:
+        path: /var/log/calico
+        type: DirectoryOrCreate
+    - configMap:
+        defaultMode: 420
+        name: tigera-ca-bundle
+      name: tigera-ca-bundle
+    - name: tigera-compliance-reporter-tls
+      secret:
+        defaultMode: 420
+        secretName: tigera-compliance-reporter-tls
+    - name: linseed-token
+      secret:
+        defaultMode: 420
+        secretName: tigera-compliance-reporter-tigera-linseed-token
+        items:
+          - key: token
+            path: token

@@ -1,0 +1,7 @@
+apiVersion: projectcalico.org/v3
+kind: GlobalReport
+metadata:
+  name: daily-network-access
+spec:
+  reportType: network-access
+  schedule: 0 1 * * *
